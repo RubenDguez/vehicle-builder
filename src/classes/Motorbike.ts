@@ -13,8 +13,9 @@ class Motorbike extends Vehicle implements Details {
 	weight: number;
 	topSpeed: number;
 	wheels: Wheel[];
+	wheelieStatus: boolean;
 
-	constructor(props: Details) {
+	constructor(props: Details, wheelie = false) {
 		super();
 		this.vin = props.vin;
 		this.color = props.color;
@@ -23,13 +24,15 @@ class Motorbike extends Vehicle implements Details {
 		this.year = props.year;
 		this.weight = props.weight;
 		this.topSpeed = props.topSpeed;
+		this.wheelieStatus = wheelie;
 
 		props.wheels.length !== 2 ? (this.wheels = [new Wheel(), new Wheel()]) : (this.wheels = props.wheels);
 	}
 
 	wheelie() {
 		if (this.started) {
-			Logger.info(`\n${this.make} ${this.model} is doing a Wheelie.\n`);
+			Logger.info(`\n${this.make} ${this.model} is${!this.wheelieStatus ? '' : ' not'} doing a Wheelie.\n`);
+			this.wheelieStatus = !this.wheelieStatus;
 			return;
 		}
 		Logger.error('\nStart the Motorbike first\n');
@@ -49,6 +52,7 @@ class Motorbike extends Vehicle implements Details {
 				Year: this.year,
 				Weight: `${this.weight} lbs`,
 				'Top Speed': `${this.topSpeed} mph`,
+				Wheelie: this.wheelieStatus,
 			},
 		]);
 		console.log('Wheels Information');
