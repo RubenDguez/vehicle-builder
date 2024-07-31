@@ -39,18 +39,25 @@ class Motorbike extends Vehicle implements Details {
 		// Call the printDetails method of the parent class, Vehicle
 		super.printDetails();
 
-		// Print details of the Car class
-		console.log(`VIN: ${this.vin}`);
-		console.log(`Make: ${this.make}`);
-		console.log(`Model: ${this.model}`);
-		console.log(`Year: ${this.year}`);
-		console.log(`Weight: ${this.weight} lbs`);
-		console.log(`Top Speed: ${this.topSpeed} mph`);
-		console.log(`Color: ${this.color}`);
-
-		// Print details of the wheels
-		console.log(`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`);
-		console.log(`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`);
+		console.log('General Information');
+		console.table([
+			{
+				VIN: this.vin,
+				Color: this.color,
+				Make: this.make,
+				Model: this.model,
+				Year: this.year,
+				Weight: `${this.weight} lbs`,
+				'Top Speed': `${this.topSpeed} mph`,
+			},
+		]);
+		console.log('Wheels Information');
+		console.table([
+			{
+				FR: `${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`,
+				RR: `${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`,
+			},
+		]);
 	}
 }
 

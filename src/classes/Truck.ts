@@ -42,21 +42,28 @@ class Truck extends Vehicle implements Details, AbleToTow {
 		// Call the printDetails method of the parent class, Vehicle
 		super.printDetails();
 
-		// Print details of the Car class
-		console.log(`VIN: ${this.vin}`);
-		console.log(`Make: ${this.make}`);
-		console.log(`Model: ${this.model}`);
-		console.log(`Year: ${this.year}`);
-		console.log(`Weight: ${this.weight} lbs`);
-		console.log(`Top Speed: ${this.topSpeed} mph`);
-		console.log(`Color: ${this.color}`);
-		console.log(`Towing Capacity: ${this.towingCapacity}`);
-
-		// Print details of the wheels
-		console.log(`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`);
-		console.log(`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`);
-		console.log(`Wheel 3: ${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`);
-		console.log(`Wheel 4: ${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`);
+		console.log('General Information');
+		console.table([
+			{
+				VIN: this.vin,
+				Color: this.color,
+				Make: this.make,
+				Model: this.model,
+				Year: this.year,
+				Weight: `${this.weight} lbs`,
+				'Top Speed': `${this.topSpeed} mph`,
+				'Towing Capacity': `${this.towingCapacity} lbs`,
+			},
+		]);
+		console.log('Wheels Information');
+		console.table([
+			{
+				FL: `${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`,
+				FR: `${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`,
+				RL: `${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`,
+				RR: `${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`,
+			},
+		]);
 	}
 }
 

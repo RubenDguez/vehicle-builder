@@ -19,37 +19,83 @@ export default class Prompts {
 		];
 	}
 
+	private static stringValidation(input: string, name: string) {
+		if (!input.length) {
+			return `Please provide a ${name}`;
+		}
+
+		if (input.length < 3) {
+			return `Please provide a valid ${name}`;
+		}
+
+		return true;
+	}
+
+	private static intValidation(input: string, name: string, min = 0, max: number) {
+		if (!input.length) {
+			return `Please provide a ${name}`;
+		}
+
+		if (isNaN(parseInt(input))) {
+			return `Please provide a valid ${name}`;
+		}
+
+		if (parseInt(input) < min || parseInt(input) > max) {
+			return `Please provide a valid year between ${min} and ${max}`;
+		}
+
+		return true;
+	}
+
 	private static defaultCreate() {
 		return [
 			{
 				type: 'input',
 				name: 'color',
 				message: 'Enter Color',
+				validate: (input: string) => {
+					return Prompts.stringValidation(input, 'color');
+				},
 			},
 			{
 				type: 'input',
 				name: 'make',
 				message: 'Enter Make',
+				validate: (input: string, name: string) => {
+					return Prompts.stringValidation(input, 'make');
+				},
 			},
 			{
 				type: 'input',
 				name: 'model',
 				message: 'Enter Model',
+				validate: (input: string) => {
+					return Prompts.stringValidation(input, 'model');
+				},
 			},
 			{
 				type: 'input',
 				name: 'year',
 				message: 'Enter Year',
+				validate: (input: string) => {
+					return Prompts.intValidation(input, 'year', 1900, new Date().getFullYear() + 2);
+				},
 			},
 			{
 				type: 'input',
 				name: 'weight',
 				message: 'Enter Weight',
+				validate: (input: string) => {
+					return Prompts.intValidation(input, 'weight', 0, 100_000);
+				},
 			},
 			{
 				type: 'input',
 				name: 'topSpeed',
 				message: 'Enter Top Speed',
+				validate: (input: string) => {
+					return Prompts.intValidation(input, 'top speed', 0, 300);
+				},
 			},
 		];
 	}
@@ -76,6 +122,9 @@ export default class Prompts {
 				type: 'input',
 				name: 'towingCapacity',
 				message: 'Enter Towing Capacity',
+				validate: (input: string) => {
+					return Prompts.intValidation(input, 'towing capacity', 0, 100_000);
+				},
 			},
 		];
 	}
@@ -87,21 +136,33 @@ export default class Prompts {
 				type: 'input',
 				name: 'frontWheelDiameter',
 				message: 'Enter Front Wheel Diameter',
+				validate: (input: string) => {
+					return Prompts.intValidation(input, 'front wheel diameter in inches', 10, 30);
+				},
 			},
 			{
 				type: 'input',
 				name: 'frontWheelBrand',
 				message: 'Enter Front Wheel Brand',
+				validate: (input: string) => {
+					return Prompts.stringValidation(input, 'front wheel brand');
+				},
 			},
 			{
 				type: 'input',
 				name: 'rearWheelDiameter',
 				message: 'Enter Rear Wheel Diameter',
+				validate: (input: string) => {
+					return Prompts.intValidation(input, 'rear wheel diameter in inches', 10, 30);
+				},
 			},
 			{
 				type: 'input',
 				name: 'rearWheelBrand',
 				message: 'Enter Rear Wheel Brand',
+				validate: (input: string) => {
+					return Prompts.stringValidation(input, 'rear wheel brand');
+				},
 			},
 		];
 	}

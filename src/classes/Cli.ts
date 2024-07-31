@@ -22,7 +22,7 @@ class Cli {
 		this.vehicles = vehicles;
 	}
 
-	private getSelectedVehicle(vin: string | undefined) {
+	private getSelectedVehicle(vin: string | undefined): Car | Truck | Motorbike | null | undefined {
 		if (!vin) return null;
 		return this.vehicles.find((vehicle) => vehicle.vin === vin);
 	}
@@ -39,6 +39,7 @@ class Cli {
 		// set the selectedVehicleVin to the vin of the selected vehicle
 		this.selectedVehicleVin = answers.selectedVehicleVin;
 		// perform actions on the selected vehicle
+		this.getSelectedVehicle(this.selectedVehicleVin)?.printDetails();
 		await this.performActions();
 	}
 
@@ -132,7 +133,7 @@ class Cli {
 		if (vehicle.vin === truck.vin) {
 			Logger.error(`\n${vehicle.make} ${vehicle.model} - ${vehicle.vin} : cannot tow itself\n`);
 		} else {
-			truck.tow(<Car | Truck | Motorbike>vehicle)
+			truck.tow(<Car | Truck | Motorbike>vehicle);
 		}
 	}
 
