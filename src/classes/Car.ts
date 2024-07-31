@@ -32,9 +32,7 @@ class Car extends Vehicle implements Details {
 		// Check if the wheels array has 4 elements
 		// If not, create 4 new Wheel objects
 		// Otherwise, use the provided wheels array
-		(props.wheels.length !== 4) ?
-			this.wheels = [new Wheel(), new Wheel(), new Wheel(), new Wheel()] :
-			this.wheels = props.wheels;
+		props.wheels.length !== 4 ? (this.wheels = [new Wheel(), new Wheel(), new Wheel(), new Wheel()]) : (this.wheels = props.wheels);
 	}
 
 	// Override the printDetails method from the Vehicle class
@@ -52,18 +50,10 @@ class Car extends Vehicle implements Details {
 		console.log(`Top Speed: ${this.topSpeed} mph`);
 
 		// Print details of the wheels
-		console.log(
-			`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`
-		);
-		console.log(
-			`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`
-		);
-		console.log(
-			`Wheel 3: ${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`
-		);
-		console.log(
-			`Wheel 4: ${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`
-		);
+		console.log(`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`);
+		console.log(`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`);
+		console.log(`Wheel 3: ${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`);
+		console.log(`Wheel 4: ${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`);
 	}
 }
 

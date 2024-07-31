@@ -1,4 +1,5 @@
 // Importing Vehicle and Wheel classes
+import Logger from 'js-logger';
 import { Details } from '../interfaces/Details.js';
 import Vehicle from './Vehicle.js';
 import Wheel from './Wheel.js';
@@ -23,13 +24,15 @@ class Motorbike extends Vehicle implements Details {
 		this.weight = props.weight;
 		this.topSpeed = props.topSpeed;
 
-		(props.wheels.length !== 2) ?
-			this.wheels = [new Wheel(), new Wheel()] :
-			this.wheels = props.wheels;
+		props.wheels.length !== 2 ? (this.wheels = [new Wheel(), new Wheel()]) : (this.wheels = props.wheels);
 	}
 
 	wheelie() {
-		console.log(`Motorbike ${this.make} ${this.model} is doing a wheelie`);
+		if (this.started) {
+			Logger.info(`\n${this.make} ${this.model} is doing a Wheelie.\n`);
+			return;
+		}
+		Logger.error('\nStart the Motorbike first\n');
 	}
 
 	override printDetails(): void {
@@ -46,12 +49,8 @@ class Motorbike extends Vehicle implements Details {
 		console.log(`Color: ${this.color}`);
 
 		// Print details of the wheels
-		console.log(
-			`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`
-		);
-		console.log(
-			`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`
-		);
+		console.log(`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`);
+		console.log(`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`);
 	}
 }
 

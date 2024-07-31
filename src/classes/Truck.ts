@@ -5,6 +5,7 @@ import Car from './Car.js';
 import Wheel from './Wheel.js';
 import AbleToTow from '../interfaces/AbleToTow.js';
 import { Details } from '../interfaces/Details.js';
+import Logger from 'js-logger';
 
 class Truck extends Vehicle implements Details, AbleToTow {
 	vin: string;
@@ -28,13 +29,12 @@ class Truck extends Vehicle implements Details, AbleToTow {
 		this.topSpeed = props.topSpeed;
 		this.towingCapacity = props.towingCapacity;
 
-		(props.wheels.length !== 4) ?
-			this.wheels = [new Wheel(), new Wheel(), new Wheel(), new Wheel()] :
-			this.wheels = props.wheels;
+		props.wheels.length !== 4 ? (this.wheels = [new Wheel(), new Wheel(), new Wheel(), new Wheel()]) : (this.wheels = props.wheels);
 	}
 
 	tow(vehicle: Truck | Motorbike | Car): void {
-		console.log(`${vehicle.make} | ${vehicle.model} ${(vehicle.weight <= this.towingCapacity) ? 'is being towed.' : 'is too heavy to be towed.'}`);
+		const details = `${vehicle.vin} | ${vehicle.make} | ${vehicle.model}`;
+		vehicle.weight <= this.towingCapacity ? console.log(`\n${details} is being towed.\n`) : Logger.error(`\n${details} is too heavy to be towed.\n`);
 	}
 
 	// Override the printDetails method from the Vehicle class
@@ -53,18 +53,10 @@ class Truck extends Vehicle implements Details, AbleToTow {
 		console.log(`Towing Capacity: ${this.towingCapacity}`);
 
 		// Print details of the wheels
-		console.log(
-			`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`
-		);
-		console.log(
-			`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`
-		);
-		console.log(
-			`Wheel 3: ${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`
-		);
-		console.log(
-			`Wheel 4: ${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`
-		);
+		console.log(`Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`);
+		console.log(`Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`);
+		console.log(`Wheel 3: ${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`);
+		console.log(`Wheel 4: ${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`);
 	}
 }
 
