@@ -197,7 +197,7 @@ export default class Prompts {
 			'Exit',
 		];
 
-		if (vehicle instanceof Truck) choices.unshift('Tow');
+		if (vehicle instanceof Truck) choices.unshift('Tow', 'Unload');
 		if (vehicle instanceof Motorbike) choices.unshift('Wheelie');
 
 		return [

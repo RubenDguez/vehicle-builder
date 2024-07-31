@@ -128,13 +128,13 @@ class Cli {
 
 	// method to find a vehicle to tow
 	async findVehicleToTow(truck: Truck): Promise<void> {
+		if (truck.towingStatus === true) {
+			Logger.error('\nTruck is already towing a vehicle. Unload the vehicle first and try again.\n');
+			return;
+		}
 		const answers = await inquirer.prompt(<any>Prompts.findVehicleToTow(this.vehicles));
 		const vehicle = <Details>answers.vehicleToTow;
-		if (vehicle.vin === truck.vin) {
-			Logger.error(`\n${vehicle.make} ${vehicle.model} - ${vehicle.vin} : cannot tow itself\n`);
-		} else {
-			truck.tow(<Car | Truck | Motorbike>vehicle);
-		}
+		truck.tow(<Car | Truck | Motorbike>vehicle);
 	}
 
 	// perform actions on the vehicle
@@ -151,10 +151,11 @@ class Cli {
 				stop: () => targetVehicle.stop(),
 				turnLeft: () => targetVehicle.turn('left'),
 				turnRight: () => targetVehicle.turn('right'),
+				unload: () => {
+					if (targetVehicle instanceof Truck) targetVehicle.unload();
+				},
 				wheelie: () => {
-					if (targetVehicle instanceof Motorbike) {
-						targetVehicle.wheelie();
-					}
+					if (targetVehicle instanceof Motorbike) targetVehicle.wheelie();
 				},
 			};
 
@@ -199,6 +200,9 @@ class Cli {
 				this.perform(EVehicleAction.REVERSE);
 				break;
 
+			case 'Unload':
+				this.perform(EVehicleAction.UNLOAD);
+				break;
 			case 'Tow':
 				await this.findVehicleToTow(<Truck>this.getSelectedVehicle(this.selectedVehicleVin));
 				break;

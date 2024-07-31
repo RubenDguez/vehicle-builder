@@ -8,4 +8,5 @@ export enum EVehicleAction {
 	TURN_LEFT = 'turnLeft',
 	REVERSE = 'reverse',
 	WHEELIE = 'wheelie',
+	UNLOAD = 'unload',
 }

@@ -17,8 +17,10 @@ class Truck extends Vehicle implements Details, AbleToTow {
 	topSpeed: number;
 	wheels: Wheel[];
 	towingCapacity: number;
+	towingStatus: boolean;
+	towingVehicle: Car | Truck | Motorbike | null;
 
-	constructor(props: Details & Omit<AbleToTow, 'tow'>) {
+	constructor(props: Details & Omit<AbleToTow, 'tow'>, towingStatus = false) {
 		super();
 		this.vin = props.vin;
 		this.color = props.color;
@@ -28,13 +30,33 @@ class Truck extends Vehicle implements Details, AbleToTow {
 		this.weight = props.weight;
 		this.topSpeed = props.topSpeed;
 		this.towingCapacity = props.towingCapacity;
+		this.towingStatus = towingStatus;
+		this.towingVehicle = null;
 
 		props.wheels.length !== 4 ? (this.wheels = [new Wheel(), new Wheel(), new Wheel(), new Wheel()]) : (this.wheels = props.wheels);
 	}
 
 	tow(vehicle: Truck | Motorbike | Car): void {
-		const details = `${vehicle.vin} | ${vehicle.make} | ${vehicle.model}`;
-		vehicle.weight <= this.towingCapacity ? console.log(`\n${details} is being towed.\n`) : Logger.error(`\n${details} is too heavy to be towed.\n`);
+		if (this.vin === vehicle.vin) {
+			Logger.error('\nTruck cannot tow itself.\n');
+			return;			
+		}
+		if (vehicle.weight > this.towingCapacity) {
+			Logger.error('\nVehicle is too heavy to be towed.\n');
+			return;
+		}
+		
+		this.towingStatus = true;
+		this.towingVehicle = vehicle;
+	}
+
+	unload() {
+		if (this.towingStatus === false) {
+			Logger.warn('\nTruck is available, nothing to unload.\n');
+			return;
+		}
+		this.towingStatus = false;
+		this.towingVehicle = null;
 	}
 
 	// Override the printDetails method from the Vehicle class
@@ -53,6 +75,7 @@ class Truck extends Vehicle implements Details, AbleToTow {
 				Weight: `${this.weight} lbs`,
 				'Top Speed': `${this.topSpeed} mph`,
 				'Towing Capacity': `${this.towingCapacity} lbs`,
+				'Towing Status': `${this.towingStatus ? 'Towing' : 'Available'}`
 			},
 		]);
 		console.log('Wheels Information');
@@ -64,6 +87,20 @@ class Truck extends Vehicle implements Details, AbleToTow {
 				RR: `${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`,
 			},
 		]);
+
+		if (this.towingVehicle) {
+			console.log('Currently Towing Vehicle')
+			console.table([
+				{
+					VIN: this.towingVehicle.vin,
+					Color: this.towingVehicle.color,
+					Make: this.towingVehicle.make,
+					Model: this.towingVehicle.model,
+					Year: this.towingVehicle.year,
+					Weight: `${this.towingVehicle.weight} lbs`,
+				},
+			]);
+		}
 	}
 }
 
