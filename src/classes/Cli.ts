@@ -9,6 +9,7 @@ import Title from './Title.js';
 import Truck from './Truck.js';
 import Wheel from './Wheel.js';
 import { EVehicleAction } from '../enums/index.js';
+import { mkdirSync, readdirSync, writeFileSync } from 'fs';
 
 Logger.useDefaults();
 
@@ -97,6 +98,7 @@ class Cli {
 		this.vehicles.push(car);
 		this.selectedVehicleVin = car.vin;
 		car.printDetails();
+		await this.save();
 		await this.performActions();
 	}
 
@@ -117,6 +119,7 @@ class Cli {
 		this.vehicles.push(truck);
 		this.selectedVehicleVin = truck.vin;
 		truck.printDetails();
+		await this.save();
 		await this.performActions();
 	}
 
@@ -136,6 +139,7 @@ class Cli {
 		this.vehicles.push(motorbike);
 		this.selectedVehicleVin = motorbike.vin;
 		motorbike.printDetails();
+		await this.save();
 		await this.performActions();
 	}
 
@@ -239,6 +243,23 @@ class Cli {
 		// if the user does not want to exit, perform actions on the selected vehicle
 		if (!this.exit) {
 			await this.performActions();
+		}
+	}
+
+	async save(): Promise<void> {
+		try {
+			writeFileSync('output/vehicles.json', JSON.stringify(this.vehicles, null, 4), { encoding: 'utf-8' });
+			return;
+		} catch (err: unknown) {
+			const error = err as Error;
+
+			// if the output folder does not exist, create it and try again
+			if (error.message.includes('no such file or directory')) {
+				mkdirSync('output');
+				return this.save();
+			}
+
+			throw new Error('Something went wrong while creating vehicles data' + '\n' + error.message);
 		}
 	}
 

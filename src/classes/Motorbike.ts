@@ -16,7 +16,7 @@ class Motorbike extends Vehicle implements Details {
 	wheelieStatus: boolean;
 
 	constructor(props: Details, wheelie = false) {
-		super();
+		super('motorbike');
 		this.vin = props.vin;
 		this.color = props.color;
 		this.make = props.make;

@@ -20,8 +20,8 @@ class Truck extends Vehicle implements Details, AbleToTow {
 	towingStatus: boolean;
 	towingVehicle: Car | Truck | Motorbike | null;
 
-	constructor(props: Details & Omit<AbleToTow, 'tow'>, towingStatus = false) {
-		super();
+	constructor(props: Details, towingStatus = false) {
+		super('truck');
 		this.vin = props.vin;
 		this.color = props.color;
 		this.make = props.make;
@@ -29,7 +29,7 @@ class Truck extends Vehicle implements Details, AbleToTow {
 		this.year = props.year;
 		this.weight = props.weight;
 		this.topSpeed = props.topSpeed;
-		this.towingCapacity = props.towingCapacity;
+		this.towingCapacity = props.towingCapacity || 10000;
 		this.towingStatus = towingStatus;
 		this.towingVehicle = null;
 
@@ -39,13 +39,13 @@ class Truck extends Vehicle implements Details, AbleToTow {
 	tow(vehicle: Truck | Motorbike | Car): void {
 		if (this.vin === vehicle.vin) {
 			Logger.error('\nTruck cannot tow itself.\n');
-			return;			
+			return;
 		}
 		if (vehicle.weight > this.towingCapacity) {
 			Logger.error('\nVehicle is too heavy to be towed.\n');
 			return;
 		}
-		
+
 		this.towingStatus = true;
 		this.towingVehicle = vehicle;
 	}
@@ -75,7 +75,7 @@ class Truck extends Vehicle implements Details, AbleToTow {
 				Weight: `${this.weight} lbs`,
 				'Top Speed': `${this.topSpeed} mph`,
 				'Towing Capacity': `${this.towingCapacity} lbs`,
-				'Towing Status': `${this.towingStatus ? 'Towing' : 'Available'}`
+				'Towing Status': `${this.towingStatus ? 'Towing' : 'Available'}`,
 			},
 		]);
 		console.log('Wheels Information');
@@ -89,7 +89,7 @@ class Truck extends Vehicle implements Details, AbleToTow {
 		]);
 
 		if (this.towingVehicle) {
-			console.log('Currently Towing Vehicle')
+			console.log('Currently Towing Vehicle');
 			console.table([
 				{
 					VIN: this.towingVehicle.vin,

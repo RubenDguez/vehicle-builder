@@ -8,11 +8,13 @@ class Vehicle implements Driveable {
 	// Declare properties of the Vehicle class
 	started: boolean;
 	currentSpeed: number;
+	type: 'car' | 'truck' | 'motorbike';
 
 	// Constructor for the Vehicle class
-	constructor() {
+	constructor(type: 'car' | 'truck' | 'motorbike') {
 		this.started = false;
 		this.currentSpeed = 0;
+		this.type = type;
 	}
 
 	private hasVehicleStarted(fn: Function) {
@@ -27,7 +29,7 @@ class Vehicle implements Driveable {
 	// Method to print vehicle details
 	printDetails(): void {
 		Title.print();
-		console.log('Vehicle State')
+		console.log('Vehicle State');
 		console.table([
 			{
 				'Vehicle Started': this.started,

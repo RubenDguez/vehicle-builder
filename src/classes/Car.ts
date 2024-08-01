@@ -18,7 +18,7 @@ class Car extends Vehicle implements Details {
 	// Constructor for the Car class
 	constructor(props: Details) {
 		// Call the constructor of the parent class, Vehicle
-		super();
+		super('car');
 
 		// Initialize properties of the Car class
 		this.vin = props.vin;
