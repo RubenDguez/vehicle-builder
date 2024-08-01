@@ -1,20 +1,20 @@
+import inquirer from 'inquirer';
 import Car from './Car.js';
 import Motorbike from './Motorbike.js';
 import Truck from './Truck.js';
 
 export default class Prompts {
 	public static chooseVehicle(vehicles: Array<Car | Truck | Motorbike>) {
+		const choices = vehicles
+			.map((vehicle) => `${vehicle.vin}\t--\t${vehicle.make} ${vehicle.model}`)
+			.concat(<any>new inquirer.Separator())
+			.concat(['back', 'exit']);
 		return [
 			{
 				type: 'list',
 				name: 'selectedVehicleVin',
 				message: 'Select a vehicle to perform an action on',
-				choices: vehicles.map((vehicle) => {
-					return {
-						name: `${vehicle.vin}\t--\t${vehicle.make} ${vehicle.model}`,
-						value: vehicle.vin,
-					};
-				}),
+				choices,
 			},
 		];
 	}
@@ -106,7 +106,7 @@ export default class Prompts {
 				type: 'list',
 				name: 'vehicleType',
 				message: 'Select a vehicle type',
-				choices: ['Car', 'Truck', 'Motorbike'],
+				choices: ['Car', 'Truck', 'Motorbike', new inquirer.Separator(), 'back', 'exit'],
 			},
 		];
 	}
@@ -216,7 +216,7 @@ export default class Prompts {
 				type: 'list',
 				name: 'CreateOrSelect',
 				message: 'Would you like to create a new vehicle or perform an action on an existing vehicle?',
-				choices: ['Create a new vehicle', 'Select an existing vehicle', 'Exit'],
+				choices: ['Create a new vehicle', 'Select an existing vehicle', new inquirer.Separator(), 'exit'],
 			},
 		];
 	}

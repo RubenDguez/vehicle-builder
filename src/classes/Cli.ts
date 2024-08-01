@@ -36,8 +36,19 @@ class Cli {
 	// method to choose a vehicle from existing vehicles
 	async chooseVehicle(): Promise<void> {
 		const answers = await inquirer.prompt(<any>Prompts.chooseVehicle(this.vehicles));
+		if (answers.selectedVehicleVin === 'back') {
+			await this.startCli();
+			return;
+		}
+		if (answers.selectedVehicleVin === 'exit') {
+			this.exit = true;
+			return;
+		}
+
+		const vin: string = answers.selectedVehicleVin.split('--')[0].trim();
+
 		// set the selectedVehicleVin to the vin of the selected vehicle
-		this.selectedVehicleVin = answers.selectedVehicleVin;
+		this.selectedVehicleVin = vin;
 		// perform actions on the selected vehicle
 		this.getSelectedVehicle(this.selectedVehicleVin)?.printDetails();
 		await this.performActions();
@@ -56,6 +67,12 @@ class Cli {
 				break;
 			case 'motorbike':
 				await this.createMotorbike();
+				break;
+			case 'back':
+				await this.startCli();
+				break;
+			case 'exit':
+				this.exit = true;
 				break;
 			default:
 				throw new Error('Invalid vehicle type');
@@ -79,7 +96,7 @@ class Cli {
 
 		this.vehicles.push(car);
 		this.selectedVehicleVin = car.vin;
-
+		car.printDetails();
 		await this.performActions();
 	}
 
@@ -97,11 +114,9 @@ class Cli {
 			wheels: [],
 			towingCapacity: parseInt(answers.towingCapacity),
 		});
-		// push the Truck to the vehicles array
 		this.vehicles.push(truck);
-		// set the selectedVehicleVin to the vin of the car
 		this.selectedVehicleVin = truck.vin;
-		// perform actions on the Truck
+		truck.printDetails();
 		await this.performActions();
 	}
 
@@ -118,11 +133,9 @@ class Cli {
 			topSpeed: parseInt(answers.topSpeed),
 			wheels: [new Wheel(answers.frontWheelDiameter, answers.frontWheelBrand), new Wheel(answers.rearWheelDiameter, answers.rearWheelBrand)],
 		});
-		// push the Motorbike to the vehicles array
 		this.vehicles.push(motorbike);
-		// set the selectedVehicleVin to the vin of the car
 		this.selectedVehicleVin = motorbike.vin;
-		// perform actions on the car
+		motorbike.printDetails();
 		await this.performActions();
 	}
 
@@ -241,7 +254,7 @@ class Cli {
 			case 'Select an existing vehicle':
 				await this.chooseVehicle();
 				break;
-			case 'Exit':
+			case 'exit':
 				this.exit = true;
 				break;
 			default:

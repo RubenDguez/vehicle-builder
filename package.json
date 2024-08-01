@@ -20,6 +20,7 @@
 		"js-logger": "^1.6.1"
 	},
 	"devDependencies": {
+		"@types/inquirer": "^9.0.7",
 		"@types/node": "^20.12.7",
 		"typescript": "^5.4.5"
 	}
